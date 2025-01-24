@@ -1,5 +1,5 @@
 
-name: Build and Publish Artifacts
+name: Build and Publish Artifact
 
 on:
   push:
