@@ -29,17 +29,17 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/project/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
 
       # Build with Maven
       - name: Build with Maven
-        run: mvn clean package
+        run: mvn -f project/pom.xml clean package
 
       # Publish the JAR artifact
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: hello-world-jar
-          path: target/hello-world-1.0-SNAPSHOT.jar
+          path: project/target/hello-world-1.0-SNAPSHOT.jar
