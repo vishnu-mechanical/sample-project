@@ -1,0 +1,45 @@
+
+name: Build and Publish Artifact
+
+on:
+  push:
+    branches:
+      - feature
+  pull_request:
+
+jobs:
+  build:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up JDK
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+
+      # Cache Maven dependencies
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Build with Maven
+      - name: Build with Maven
+        run: mvn clean package
+
+      # Publish the JAR artifact
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: hello-world-jar
+          path: target/hello-world-1.0-SNAPSHOT.jar
